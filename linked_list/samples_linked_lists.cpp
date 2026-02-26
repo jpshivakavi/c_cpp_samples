@@ -396,6 +396,27 @@ void dlinked_list_main()
 	return;
 }
 
+int compare_lists_recursion(myNode* list1, myNode* list2)
+{
+	if (list1 == NULL && list2 == NULL)
+		return 0;
+
+	if (list1 == NULL)
+		return -1;
+
+	if (list2 == NULL)
+		return 1;
+
+	if (list1->data > list2->data)
+		return 1;
+
+	if (list1->data < list2->data)
+		return -1;
+
+	return compare_lists_recursion(list1->next, list2->next);
+}
+
+
 int compare_lists(myNode* list1, myNode *list2)
 {
 	myNode* temp1 = NULL;
@@ -497,6 +518,19 @@ void compare_lists_main()
 	printf("\nResult of comparison of same lists:\n");
 	result = compare_lists(myList1, myList1);
 	print_result(result);
+
+	printf("\nResult of comparison of myList1 and myList2 using recursion:\n");
+	result = compare_lists_recursion(myList1, myList2);
+	print_result(result);
+
+	printf("\nResult of comparison of empty lists using recursion:\n");
+	result = compare_lists_recursion(NULL, NULL);
+	print_result(result);
+
+	printf("\nResult of comparison of same lists using recursion:\n");
+	result = compare_lists_recursion(myList1, myList1);
+	print_result(result);
+
 }
 
 int main()
