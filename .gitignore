@@ -56,3 +56,4 @@ dkms.conf
 
 # Visual Studio local workspace folders
 **/.vs/
+**/x64/*
