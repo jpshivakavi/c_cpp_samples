@@ -64,7 +64,6 @@ int main()
     int data_i = my_atoi(data);
     printf("Value of data_i (int) = %d", data_i);
 
-
     // memove operations
     char* src = (char* ) malloc(sizeof(char) * 20);
     if (src != NULL)
