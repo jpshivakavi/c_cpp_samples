@@ -4,7 +4,10 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <string.h>
+#include <stdarg.h>
+#include <stdlib.h>
 
+// Simple custom atoi function implementation
 int my_atoi(const char* string)
 {
     int i = 0;
@@ -16,6 +19,7 @@ int my_atoi(const char* string)
     return i;
 }
 
+// Simple custom memmove impementation
 void* my_memmove(void* dest, const void* src, size_t size)
 {
     unsigned char* p1 = (unsigned char *) dest;
@@ -52,7 +56,106 @@ void* my_memmove(void* dest, const void* src, size_t size)
     return dest;
 }
 
-int main()
+// function to convert number of given base to string
+char* num_to_string(unsigned int num, int base)
+{
+    static char buf[33] = { 0 };
+    char* ptr = NULL;
+
+    ptr = &buf[sizeof(buf) - 1];
+    *ptr = '\0';
+    do {
+        *--ptr = "0123456789abcdef"[num % base];
+        num = num / base;
+    } while (num != 0);
+
+    return ptr;
+}
+
+// custom printf function
+void my_printf(char* fmt, ...)
+{
+    char* ptr_fmt = NULL;
+    int i = 0;
+    unsigned int u = 0;
+    char* s = NULL;
+    va_list argp = NULL;
+    va_start(argp, fmt);
+    ptr_fmt = fmt;
+    for (ptr_fmt = fmt; *ptr_fmt != '\0'; ptr_fmt++)
+    {
+        if (*ptr_fmt != '%')
+        {
+            putchar(*ptr_fmt);
+            continue;
+        }
+        ptr_fmt++;
+
+        switch (*ptr_fmt)
+        {
+            case 'c':
+                i = va_arg(argp, char);
+                putchar(i);
+                break;
+
+            case 'd':
+                i = va_arg(argp, int);
+                fputs(num_to_string(i, 10), stdout);
+                break;
+
+            case 's':
+                s = va_arg(argp, char*);
+                fputs(s, stdout);
+                break;
+        }
+    }
+    va_end(argp);
+}
+
+char* my_strcpy(char* dest, const char* src)
+{
+    char* ptr = dest;
+    while (*ptr++ = *src++);
+    return dest;
+}
+
+int my_strcmp(const char* str1, const char* str2)
+{
+    while (*str1 == *str2)
+    {
+        if (*str1 == '\0')
+        {
+            return 0;
+        }
+        str1++;
+        str2++;
+    }
+
+    if (*str1 > *str2)
+    {
+        return 1;
+    }
+    else {
+        return -1;
+    }
+}
+
+void my_strcmp_test()
+{
+    int result = 0;
+
+    result = my_strcmp("JP", "PJ");
+    printf("Result of comparison of JP and PJ = %d\n", result);
+
+    result = my_strcmp("JP", "JP");
+    printf("Result of comparison of JP and JP = %d\n", result);
+
+    result = my_strcmp("PJ", "JP");
+    printf("Result of comparison of PJ and JP = %d\n", result);
+
+}
+
+void my_atoi_test()
 {
     char data[20] = { 0 };
     printf("Enter number string:\n");
@@ -63,9 +166,12 @@ int main()
     printf("Converting the string to Integer data format\n");
     int data_i = my_atoi(data);
     printf("Value of data_i (int) = %d", data_i);
+}
 
+void my_memmove_test()
+{
     // memove operations
-    char* src = (char* ) malloc(sizeof(char) * 20);
+    char* src = (char*)malloc(sizeof(char) * 20);
     if (src != NULL)
     {
         int size = 10;
@@ -85,9 +191,28 @@ int main()
     else
     {
         printf("Failed to allocate memory to dest\n");
-        return 1;
     }
 
+}
+
+
+void my_strcpy_test()
+{
+    char dest[30] = { 0 };
+    const char src[] = "This is Jayaprakash";
+    char* ptr = NULL;
+    ptr = my_strcpy(dest, src);
+    printf("Copied string = %s\n", ptr);
+}
+
+int main()
+{
+    // my_atoi_test()
+    // my_memmove_test()
+    // usage of my_printf to print char and int
+    my_printf((char *)"The character is = %c number = %d name = %s\n", 'C', 100, (char *)"Jayaprakash");
+    my_strcpy_test();
+    my_strcmp_test();
     return 0;
 }
 
